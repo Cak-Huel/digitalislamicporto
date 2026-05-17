@@ -1,0 +1,67 @@
+---
+// src/components/FootprintSteps.astro
+---
+<!-- Import Google Material Symbols (Rounded) untuk Icon Footprint -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" rel="stylesheet" />
+
+<div class="w-full flex items-center justify-center overflow-hidden py-10 pointer-events-none" x-data="{ active: false }" x-intersect.once="active = true">
+  
+  <!-- Container Flexbox untuk memusatkan ke-5 jejak kaki di tengah -->
+  <div class="flex flex-row items-center justify-center gap-4 md:gap-8 translate-y-4">
+    
+    <!-- Jejak 1 (Kaki Kiri) -->
+    <!-- Rotate 90 (menghadap kanan), -scale-y-100 (mirror untuk kaki kiri) -->
+    <div class="translate-y-6 rotate-[75deg]" :class="active ? 'animate-footprint [animation-delay:0s]' : 'opacity-0'">
+      <span class="material-symbols-rounded text-primary text-5xl md:text-7xl -scale-y-100 inline-block drop-shadow-md">
+        footprint
+      </span>
+    </div>
+
+    <!-- Jejak 2 (Kaki Kanan) -->
+    <!-- Rotate 90 (menghadap kanan), rotate-12 (sedikit miring) -->
+    <div class="-translate-y-6 rotate-[105deg]" :class="active ? 'animate-footprint [animation-delay:0.4s]' : 'opacity-0'">
+      <span class="material-symbols-rounded text-primary text-5xl md:text-7xl inline-block drop-shadow-md">
+        footprint
+      </span>
+    </div>
+
+    <!-- Jejak 3 (Kaki Kiri) -->
+    <div class="translate-y-6 rotate-[75deg]" :class="active ? 'animate-footprint [animation-delay:0.8s]' : 'opacity-0'">
+      <span class="material-symbols-rounded text-primary text-5xl md:text-7xl -scale-y-100 inline-block drop-shadow-md">
+        footprint
+      </span>
+    </div>
+
+    <!-- Jejak 4 (Kaki Kanan) -->
+    <div class="-translate-y-6 rotate-[105deg]" :class="active ? 'animate-footprint [animation-delay:1.2s]' : 'opacity-0'">
+      <span class="material-symbols-rounded text-primary text-5xl md:text-7xl inline-block drop-shadow-md">
+        footprint
+      </span>
+    </div>
+
+    <!-- Jejak 5 (Kaki Kiri) -->
+    <div class="translate-y-6 rotate-[75deg]" :class="active ? 'animate-footprint [animation-delay:1.6s]' : 'opacity-0'">
+      <span class="material-symbols-rounded text-primary text-5xl md:text-7xl -scale-y-100 inline-block drop-shadow-md">
+        footprint
+      </span>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @keyframes footprint-fade-in {
+    0% { 
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    100% { 
+      transform: scale(1);
+      opacity: 0.6;
+    }
+  }
+
+  .animate-footprint {
+    animation: footprint-fade-in 0.6s cubic-bezier(0.39, 0.575, 0.565, 1.000) both;
+  }
+</style> 

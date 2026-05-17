@@ -1,0 +1,60 @@
+<section class="py-24 px-6 md:px-12 bg-surface-container-low border-y border-outline-variant/30 relative group" id="strategi">
+    <!-- Edit Overlay -->
+    <template x-if="editMode">
+        <div class="absolute top-4 right-4 flex gap-2 z-10">
+            <button @click="saveData({ strategi: portfolioData.strategi })" class="bg-primary text-on-primary px-3 py-1 rounded text-sm hover:bg-surface-tint">Simpan Strategi</button>
+        </div>
+    </template>
+
+    <div class="max-w-7xl mx-auto">
+        <h2 class="font-headline text-4xl text-on-surface mb-12 text-center"
+            :contenteditable="editMode"
+            x-text="portfolioData.strategi.title"
+            @blur="portfolioData.strategi.title = $event.target.innerText"></h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 relative">
+            <!-- Glow background -->
+            <div class="absolute inset-0 bg-primary-container/20 blur-[100px] -z-10 rounded-full pointer-events-none"></div>
+
+            <template x-for="(item, index) in portfolioData.strategi.items" :key="index">
+                <div class="bg-surface-container-lowest/60 backdrop-blur-xl p-10 rounded-xl sahara-shadow border border-white/30 relative transition-all duration-1000 ease-out hover:border-primary/50"
+                     x-data="{ shown: false }" 
+                     x-intersect.once="shown = true" 
+                     :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'"
+                     :style="`animation-delay: ${index * 200}ms`">
+                    
+                    <div class="w-12 h-12 bg-secondary-container/80 backdrop-blur-sm rounded-full flex items-center justify-center mb-6 text-on-secondary-container border border-white/40">
+                        <span class="material-symbols-outlined" x-text="item.icon"></span>
+                    </div>
+                    
+                    <template x-if="editMode">
+                        <div class="mb-4">
+                            <label class="text-xs text-primary mb-1 block">Icon Material:</label>
+                            <input type="text" x-model="portfolioData.strategi.items[index].icon" class="w-full text-xs px-2 py-1 border rounded bg-surface">
+                        </div>
+                    </template>
+
+                    <h3 class="font-headline text-2xl text-on-surface mb-4"
+                        :contenteditable="editMode"
+                        x-text="item.title"
+                        @blur="portfolioData.strategi.items[index].title = $event.target.innerText"></h3>
+                    
+                    <div class="space-y-4 font-body text-on-surface-variant text-sm leading-relaxed">
+                        <p>
+                            <strong class="text-on-surface font-semibold">Tantangan:</strong> 
+                            <span :contenteditable="editMode"
+                                  x-text="item.challenge"
+                                  @blur="portfolioData.strategi.items[index].challenge = $event.target.innerText"></span>
+                        </p>
+                        <p>
+                            <strong class="text-on-surface font-semibold">Solusi:</strong> 
+                            <span :contenteditable="editMode"
+                                  x-text="item.solution"
+                                  @blur="portfolioData.strategi.items[index].solution = $event.target.innerText"></span>
+                        </p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</section>

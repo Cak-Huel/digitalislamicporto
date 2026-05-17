@@ -1,0 +1,124 @@
+<section class="py-24 px-6 md:px-12 bg-surface-container-high border-y border-outline-variant/30 relative group" id="galeri-inovasi"
+    x-data="{ showModal: false, activeLink: '' }">
+    
+    <!-- Edit Overlay -->
+    <template x-if="editMode">
+        <div class="absolute top-4 right-4 flex gap-2 z-10">
+            <button @click="saveData({ galeri_inovasi: portfolioData.galeri_inovasi })" class="bg-primary text-on-primary px-3 py-1 rounded text-sm hover:bg-surface-tint">Simpan Galeri</button>
+        </div>
+    </template>
+
+    <!-- Modal for external link -->
+    <div x-show="showModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" style="display: none;">
+        <div @click.away="showModal = false" class="bg-surface-container-lowest rounded-xl shadow-2xl w-full max-w-5xl h-[85vh] flex flex-col relative border border-outline-variant/50 overflow-hidden">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center px-6 py-4 border-b border-outline-variant/50 bg-surface">
+                <h3 class="font-headline text-xl text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">visibility</span> Pratinjau
+                </h3>
+                <div class="flex items-center gap-4">
+                    <a :href="activeLink" target="_blank" class="text-sm font-body text-primary hover:underline flex items-center gap-1">
+                        Buka di Tab Baru <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    </a>
+                    <button @click="showModal = false" class="text-on-surface-variant hover:text-error transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Iframe Container -->
+            <div class="flex-1 bg-surface-variant/30 w-full h-full relative">
+                <!-- Loading indicator -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-0">
+                    <span class="material-symbols-outlined text-4xl text-primary animate-pulse mb-2">hourglass_empty</span>
+                    <span class="font-body text-sm text-on-surface-variant">Memuat konten... (Jika tidak muncul, gunakan tombol Tab Baru)</span>
+                </div>
+                
+                <template x-if="showModal">
+                    <iframe :src="activeLink.includes('drive.google.com') ? activeLink.split('/view')[0] + '/preview' : activeLink" class="w-full h-full border-none z-10 relative bg-white" allowfullscreen></iframe>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+                <h2 class="font-headline text-4xl text-on-surface mb-4">Galeri Inovasi</h2>
+                <p class="font-body text-on-surface-variant">Karya dan media pembelajaran yang dikembangkan.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            <!-- Glow background -->
+            <div class="absolute inset-0 bg-tertiary-container/10 blur-[120px] -z-10 rounded-full pointer-events-none"></div>
+
+            <template x-for="(item, index) in portfolioData.galeri_inovasi" :key="index">
+                <div class="group relative" 
+                    @click="if(!editMode && item.link) { activeLink = item.link; showModal = true; }"
+                    :class="[(item.link && !editMode) ? 'cursor-pointer' : '', shown ? 'animate-roll-in-left' : 'opacity-0']"
+                    x-data="{ shown: false }" 
+                    x-intersect.once="shown = true"
+                    :style="`animation-delay: ${index * 300}ms`">
+                    
+                    <div class="aspect-square bg-surface-container-lowest/50 backdrop-blur-md rounded-xl mb-4 overflow-hidden border border-white/30 relative sahara-shadow flex items-center justify-center">
+                        <!-- If Image exists -->
+                        <template x-if="item.image">
+                            <img :src="window.formatImageUrl(item.image)" :alt="item.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 sepia-[.2]" />
+                        </template>
+                        <!-- If No image, show icon -->
+                        <template x-if="!item.image && item.icon">
+                            <span class="material-symbols-outlined text-6xl text-secondary" x-text="item.icon"></span>
+                        </template>
+
+                        <!-- Edit Image URL Overlay -->
+                        <template x-if="editMode">
+                            <div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-3 opacity-0 hover:opacity-100 transition-opacity z-20 overflow-y-auto">
+                                <label class="text-white text-[10px] font-body mb-1">URL Gambar / Base64:</label>
+                                <input type="text" x-model="portfolioData.galeri_inovasi[index].image" class="w-full text-xs text-black px-1 py-1 rounded mb-2">
+                                
+                                <label class="text-white text-[10px] font-body mb-1 mt-1">Atau Unggah:</label>
+                                <input type="file" accept="image/*" class="w-full text-[10px] text-white file:mr-1 file:py-1 file:px-1 file:rounded file:border-0 file:text-[10px] file:bg-primary file:text-on-primary hover:file:bg-surface-tint mb-2"
+                                    @change="
+                                        const file = $event.target.files[0];
+                                        if(file) {
+                                            window.compressImageBase64(file).then(base64 => {
+                                                portfolioData.galeri_inovasi[index].image = base64;
+                                            }).catch(err => alert('Gagal memproses gambar.'));
+                                        }
+                                    ">
+
+                                <label class="text-white text-[10px] font-body mb-1">Atau Ikon Material:</label>
+                                <input type="text" x-model="portfolioData.galeri_inovasi[index].icon" class="w-full text-xs text-black px-1 py-1 rounded">
+                            </div>
+                        </template>
+
+                        <!-- Non-edit hover effect -->
+                        <template x-if="!editMode && item.link">
+                            <div class="absolute inset-0 bg-inverse-surface/10 group-hover:bg-transparent transition-colors duration-300"></div>
+                        </template>
+                    </div>
+
+                    <h3 class="font-headline text-xl text-on-surface mb-1"
+                        :contenteditable="editMode"
+                        x-text="item.title"
+                        @blur="portfolioData.galeri_inovasi[index].title = $event.target.innerText"></h3>
+                    
+                    <p class="font-body text-sm text-on-surface-variant"
+                       :contenteditable="editMode"
+                       x-text="item.description"
+                       @blur="portfolioData.galeri_inovasi[index].description = $event.target.innerText"></p>
+
+                    <!-- Edit Link Input -->
+                    <template x-if="editMode">
+                        <div class="mt-2 text-xs">
+                            <label class="block text-primary mb-1">Tautan URL:</label>
+                            <input type="text" x-model="item.link" class="w-full border border-outline-variant rounded px-2 py-1 bg-surface" placeholder="Masukkan URL (opsional)">
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,170 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+		<link href="https://fonts.googleapis.com" rel="preconnect" />
+		<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+		<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        
+        <!-- Firebase SDKs -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+            import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+            import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyBT3YcAIWt9QssLRFYMfjritBqGMNdqxQw",
+                authDomain: "islamic-porto.firebaseapp.com",
+                projectId: "islamic-porto",
+                storageBucket: "islamic-porto.firebasestorage.app",
+                messagingSenderId: "803117477027",
+                appId: "1:803117477027:web:f362182fce6a9c85326316",
+                measurementId: "G-MQTF46XNQL"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            // Expose to window for Alpine to use
+            window.firebaseAuth = auth;
+            window.firebaseDb = db;
+            window.onAuthStateChanged = onAuthStateChanged;
+            window.signOut = signOut;
+            window.doc = doc;
+            window.getDoc = getDoc;
+            window.setDoc = setDoc;
+
+            // Helper to convert Google Drive link to direct image link
+            window.formatImageUrl = function(url) {
+                if (!url) return url;
+                const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                }
+                return url;
+            };
+
+            // Helper to compress image to Base64
+            window.compressImageBase64 = function(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = event => {
+                        const img = new Image();
+                        img.src = event.target.result;
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const MAX_WIDTH = 800;
+                            const MAX_HEIGHT = 800;
+                            let width = img.width;
+                            let height = img.height;
+
+                            if (width > height) {
+                                if (width > MAX_WIDTH) {
+                                    height *= MAX_WIDTH / width;
+                                    width = MAX_WIDTH;
+                                }
+                            } else {
+                                if (height > MAX_HEIGHT) {
+                                    width *= MAX_HEIGHT / height;
+                                    height = MAX_HEIGHT;
+                                }
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            resolve(canvas.toDataURL('image/jpeg', 0.7));
+                        };
+                        img.onerror = error => reject(error);
+                    };
+                    reader.onerror = error => reject(error);
+                });
+            };
+        </script>
+	</head>
+	<body class="font-body antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen relative" x-data="{
+        editMode: false,
+        initAuth() {
+            if(window.onAuthStateChanged) {
+                window.onAuthStateChanged(window.firebaseAuth, (user) => {
+                    this.editMode = !!user;
+                });
+            } else {
+                setTimeout(() => this.initAuth(), 100);
+            }
+        },
+        async saveData(data) {
+            try {
+                // Merge new data with existing in Alpine store
+                const currentData = this.portfolioData;
+                const merged = { ...currentData, ...data };
+                
+                // Save to Firestore
+                const docRef = window.doc(window.firebaseDb, 'portfolio', 'main');
+                await window.setDoc(docRef, merged, { merge: true });
+                
+                alert('Data berhasil disimpan ke Firestore!');
+            } catch(e) {
+                console.error(e);
+                alert('Terjadi kesalahan saat menyimpan.');
+            }
+        },
+        async doLogout() {
+            try {
+                await window.signOut(window.firebaseAuth);
+                window.location.reload();
+            } catch(e) {
+                console.error(e);
+            }
+        }
+    }" x-init="initAuth()">
+		
+        <template x-if="editMode">
+            <div class="fixed top-24 right-6 z-50 bg-primary text-on-primary px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">edit</span> Mode Edit Aktif
+                <button @click="doLogout()" class="ml-4 text-xs underline hover:text-surface-variant">Logout</button>
+            </div>
+        </template>
+
+		<slot />
+
+	</body>
+</html>
+
+<style is:global>
+	.material-symbols-outlined {
+		font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+	}
+	body {
+		background-color: theme('colors.background');
+		color: theme('colors.on-background');
+	}
+	.sahara-shadow {
+		box-shadow: 0 2px 16px rgba(58, 48, 42, 0.04);
+	}
+    
+    [contenteditable="true"] {
+        outline: 2px dashed theme('colors.primary');
+        outline-offset: 4px;
+        border-radius: 4px;
+        min-height: 1.5em;
+        transition: outline 0.2s ease;
+    }
+    [contenteditable="true"]:focus {
+        outline-style: solid;
+        background-color: theme('colors.surface-container-high');
+    }
+</style>

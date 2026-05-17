@@ -1,0 +1,55 @@
+---
+// src/components/ScrollImage.astro
+---
+<div class="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+    <!-- Area pergerakan mencakup seluruh section -->
+    <div class="relative w-full h-full flex items-end">
+        
+        <!-- Hill Background (Symmetrical Seamless CSS Loop) -->
+        <!-- Bergerak dari Kiri ke Kanan secara terus-menerus tanpa pudar -->
+        <div class="flex w-max animate-loop-right">
+            
+            <!-- GRUP 1: Deretan bukit simetris -->
+            <div class="flex">
+                <!-- 1. Asli -->
+                <img src="/hill.svg" alt="Hill" class="h-48 md:h-80 w-auto max-w-none object-cover object-bottom" />
+                <!-- 2. Terbalik (Mirror) -->
+                <img src="/hill.svg" alt="Hill" class="h-48 md:h-80 w-auto max-w-none object-cover object-bottom -scale-x-100" />
+                <!-- 3. Asli -->
+                <img src="/hill.svg" alt="Hill" class="h-48 md:h-80 w-auto max-w-none object-cover object-bottom" />
+                <!-- 4. Terbalik -->
+                <img src="/hill.svg" alt="Hill" class="h-48 md:h-80 w-auto max-w-none object-cover object-bottom -scale-x-100" />
+            </div>
+            
+            <!-- GRUP 2: Kloning persis dari Grup 1 untuk looping tanpa putus -->
+            <div class="flex">
+                <img src="/hill.svg" alt="Hill" class="h-48 md:h-80 w-auto max-w-none object-cover object-bottom" />
+                <img src="/hill.svg" alt="Hill" class="h-48 md:h-80 w-auto max-w-none object-cover object-bottom -scale-x-100" />
+                <img src="/hill.svg" alt="Hill" class="h-48 md:h-80 w-auto max-w-none object-cover object-bottom" />
+                <img src="/hill.svg" alt="Hill" class="h-48 md:h-80 w-auto max-w-none object-cover object-bottom -scale-x-100" />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<style>
+  .animate-loop-right {
+    /* Kecepatan 35s untuk ukuran yang lebih besar agar tetap halus */
+    animation: slide-right 35s linear infinite;
+    will-change: transform;
+  }
+
+  /* Animasi Kiri ke Kanan */
+  @keyframes slide-right {
+    0% {
+      /* Mulai dengan posisi ditarik ke kiri (-50%). Layar akan menampilkan Grup 2 */
+      transform: translateX(-50%);
+    }
+    100% {
+      /* Bergerak ke kanan hingga 0%. Layar menampilkan Grup 1, lalu reset */
+      transform: translateX(0%);
+    }
+  }
+</style> 

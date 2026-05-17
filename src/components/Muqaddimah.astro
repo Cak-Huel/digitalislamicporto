@@ -1,0 +1,82 @@
+<section class="py-24 px-6 md:px-12 bg-surface-container-low border-t border-outline-variant/30 relative group" id="muqaddimah">
+    
+    <!-- Edit Overlay -->
+    <template x-if="editMode">
+        <div class="absolute top-4 right-4 flex gap-2 z-20">
+            <button @click="saveData({ muqaddimah: portfolioData.muqaddimah })" class="bg-primary text-on-primary px-3 py-1 rounded text-sm hover:bg-surface-tint">Simpan Muqaddimah</button>
+        </div>
+    </template>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-center relative z-10" x-data="{ shown: false }" x-intersect.once="shown = true">
+        <!-- 2 Photos with frames and names -->
+        <div class="md:col-span-5 relative grid grid-cols-2 gap-4">
+            <template x-for="(photo, index) in portfolioData.muqaddimah.photos" :key="index">
+                <div class="flex flex-col items-center group/photo">
+                    <div class="w-full aspect-[4/5] rounded-xl overflow-hidden bg-surface-variant sahara-shadow border-4 border-surface-container-lowest relative">
+                        <img :src="window.formatImageUrl(photo.url)" :alt="photo.name" class="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-500 hover:scale-105" />
+                        
+                        <!-- Image URL Input Overlay (only in edit mode) -->
+                        <template x-if="editMode">
+                            <div class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-4 opacity-0 hover:opacity-100 transition-opacity">
+                                <label class="text-white text-sm font-body mb-2">URL Foto Baru:</label>
+                                <input type="text" x-model="portfolioData.muqaddimah.photos[index].url" class="w-full text-sm text-black px-2 py-1 rounded mb-4">
+                                <label class="text-white text-sm font-body mb-2">Atau Unggah (Max 1MB):</label>
+                                <input type="file" accept="image/*" class="w-full text-xs text-white file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-primary file:text-on-primary hover:file:bg-surface-tint"
+                                    @change="
+                                        const file = $event.target.files[0];
+                                        if(file) {
+                                            window.compressImageBase64(file).then(base64 => {
+                                                portfolioData.muqaddimah.photos[index].url = base64;
+                                            }).catch(err => alert('Gagal memproses gambar.'));
+                                        }
+                                    ">
+                            </div>
+                        </template>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <p class="font-headline text-lg text-primary italic font-medium"
+                           :contenteditable="editMode"
+                           x-text="photo.name"
+                           @blur="portfolioData.muqaddimah.photos[index].name = $event.target.innerText">
+                        </p>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <div class="md:col-span-7 transition-all duration-1000 ease-out" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+            <h2 class="font-headline text-4xl text-on-surface mb-6"
+                :contenteditable="editMode"
+                x-html="portfolioData.muqaddimah.title"
+                @blur="portfolioData.muqaddimah.title = $event.target.innerHTML">
+            </h2>
+            <div class="w-16 h-px bg-primary mb-8 transition-all duration-1000 delay-300" :class="shown ? 'w-16' : 'w-0'"></div>
+            
+            <div class="space-y-6 font-body text-on-surface-variant leading-relaxed text-lg"
+                 :contenteditable="editMode"
+                 x-html="portfolioData.muqaddimah.description"
+                 @blur="portfolioData.muqaddimah.description = $event.target.innerHTML">
+            </div>
+
+            <div class="mt-10 grid grid-cols-2 gap-6 transition-all duration-1000 delay-500" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'">
+                <div class="border-l-2 border-tertiary/50 pl-4">
+                    <span class="material-symbols-outlined text-tertiary mb-2 text-3xl">menu_book</span>
+                    <h3 class="font-headline text-xl text-on-surface">Tradisi</h3>
+                    <p class="font-body text-sm text-on-surface-variant mt-1">Mengakar pada teks suci dan turats.</p>
+                </div>
+                <div class="border-l-2 border-primary/50 pl-4">
+                    <span class="material-symbols-outlined text-primary mb-2 text-3xl">devices</span>
+                    <h3 class="font-headline text-xl text-on-surface">Inovasi</h3>
+                    <p class="font-body text-sm text-on-surface-variant mt-1">Adaptif terhadap medium masa kini.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dekorasi Gambar Statis -->
+    <img
+        src="https://cdn-icons-png.flaticon.com/512/2507/2507653.png"
+        alt="Dekorasi Islami"
+        class="absolute bottom-0 h-1/2 w-auto max-w-full object-contain left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 opacity-20 pointer-events-none z-0"
+    />
+</section>

@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import Muqaddimah from '../components/Muqaddimah.astro';
+import JejakDigital from '../components/JejakDigital.astro';
+import GaleriInovasi from '../components/GaleriInovasi.astro';
+import Khidmah from '../components/Khidmah.astro';
+import Strategi from '../components/Strategi.astro';
+import Visi from '../components/Visi.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Digital Islamic Educator Portfolio">
+    <script is:inline>
+        window.DEFAULT_PORTFOLIO_DATA = {
+            hero: {
+                title: "Membangun Guru PAI yang <span class='italic text-primary'>Adaptif</span> dan <span class='italic text-primary'>Inovatif</span>",
+                description: "Menjembatani nilai-nilai mulia pendidikan Islam tradisional dengan dinamika inovasi digital modern untuk generasi masa depan."
+            },
+            muqaddimah: {
+                title: "Filosofi Pendidikan Islam di Era Digital",
+                description: "<p>Pendidikan tidak sekadar transfer pengetahuan, melainkan penanaman adab dan akhlak. Di era digital, tantangan terbesar bukanlah kurangnya informasi, melainkan bagaimana menjaga kedalaman makna spiritual di tengah arus teknologi yang cepat.</p>",
+                photos: [
+                    { url: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBLNdBvbawpri6tvvHSpLM9XqV2zwaKsqJibCJABwNALV7y6L5DFmdG-wINI68viOaBlIpSuO8lBMMh5MLdQ66GthXJwpPLdsZvWW2gvLwv1t1aHGEAvTL3PrfTbKwBqN-xVPz3VtWzWiV5XYXWD272rpwKUERcCw2i84PWF8ooNuhmGQy4FoQcO6Iaz_rOuJHLbOYtgAxzIhugMUYCYEvFSjxUed879Hu0jJ3b2p-0VrqHZmftfRPwDr06Ov6O4z4CDOQocUAcMj3", name: "Ust. Sahara" },
+                    { url: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBLNdBvbawpri6tvvHSpLM9XqV2zwaKsqJibCJABwNALV7y6L5DFmdG-wINI68viOaBlIpSuO8lBMMh5MLdQ66GthXJwpPLdsZvWW2gvLwv1t1aHGEAvTL3PrfTbKwBqN-xVPz3VtWzWiV5XYXWD272rpwKUERcCw2i84PWF8ooNuhmGQy4FoQcO6Iaz_rOuJHLbOYtgAxzIhugMUYCYEvFSjxUed879Hu0jJ3b2p-0VrqHZmftfRPwDr06Ov6O4z4CDOQocUAcMj3", name: "Sahara Educator" }
+                ]
+            },
+            galeri_inovasi: [
+                { id: 1, title: "Video Dakwah Pendek", description: "Reels & TikTok Edukatif", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC5qTRPTPXyy4Zge3cRShT7BzqJMC4KCrQMstnixTSlncgbkxBRs5KvgIjc17vrJJPrmsR31OeWwNsz-M4Z2nKJ4d_9R7tPDHVqFODVuQJtT_foKLsyV7bEe9NH3xnw1RMmeqnZLXyjQvtyyUlV873Nbqb5Coq9vjxk_UmLa6iTx8BGBO44r1z0c3YJFmrsbdVs4u6bq2_31OyQfEw9yh7Wwr3YkihN4GP08KW6unFfdGOOtPhVgkBigQevbHR_AKlDqAYaJ3N1TKQd", link: "" },
+                { id: 2, title: "Modul PAI Digital", description: "PDF Interaktif & E-book", icon: "menu_book", image: "", link: "" },
+                { id: 3, title: "Game Edukasi Islami", description: "Quizziz & Wordwall", icon: "sports_esports", image: "", link: "https://wordwall.net/" },
+                { id: 4, title: "Presentasi Estetik", description: "Materi Visual Menarik", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA_XCaio01ia0fc69zyriaioVUdM6wCuWRvDs0LqMtF7dE9doaqckZt0IABMcP1h69OFWvFGfYekQGbjZlg5HdWd1p859iUoYQwb-aKxMTuhMF8m6PHaduQrRAjRgNxORxu9FWR8BSIJBb2Bv0IRWeQgoRvhf2yTZxeW2yv-SY5ugEIodTlgFNkhxorwF0QtutU_zUSn7LvttQLRtMawOzVIhguQ7yDM95aOqTt9rI8V-SBgt240hmlmFxuBY--kSLcbJsR7HtU7Cix", link: "" }
+            ],
+            jejak_digital: {
+                title: "Jejak Digital & Kompetensi",
+                description: "Meramu keterampilan teknis modern untuk mendukung penyampaian materi keagamaan yang efektif.",
+                items: [
+                    { title: "Operasional LMS & E-Learning", icon: "computer", description: "Penguasaan mendalam dalam merancang, mengelola, dan mengevaluasi pembelajaran melalui platform Moodle, Google Workspace for Education, dan Canvas untuk menciptakan ruang kelas virtual yang interaktif dan bermakna." },
+                    { title: "Sertifikasi Pendidik", icon: "verified", description: "Tersertifikasi profesional dengan fokus pengembangan karakter digital." },
+                    { title: "Literasi Digital Santri", icon: "cast_for_education", description: "Program pembekalan etika bermedia sosial dan saring informasi berbasis tabayyun." },
+                    { title: "Desain Kurikulum Adaptif", icon: "edit_document", description: "Menyusun RPP dan silabus PAI yang mengintegrasikan kecerdasan buatan (AI) sebagai alat bantu, bukan pengganti nalar kritis siswa." }
+                ]
+            },
+            khidmah: {
+                title: "Khidmah & Pengabdian",
+                items: [
+                    { year: "2020 - Sekarang", title: "Guru PAI Tingkat Menengah Atas", description: "Mengampu mata pelajaran PAI dengan pendekatan blended learning. Merancang proyek sosial siswa berbasis kepedulian lingkungan hidup dalam perspektif ekologi Islam." },
+                    { year: "2018 - 2020", title: "Fasilitator Pesantren Digital", description: "Membangun kurikulum non-formal untuk santri mukim yang berfokus pada desain grafis dakwah dan dasar-dasar penulisan artikel keislaman di era web 2.0." },
+                    { year: "Project Berkelanjutan", title: "Inisiator \"Ngaji Literasi\"", description: "Komunitas diskusi bulanan yang membedah buku-buku pemikiran Islam kontemporer dan dampaknya terhadap gaya hidup pemuda urban." }
+                ]
+            },
+            strategi: {
+                title: "Strategi Adaptif",
+                items: [
+                    { icon: "smartphone", title: "Menghadapi Distraksi Gawai", challenge: "Konsentrasi siswa menurun akibat adiksi media sosial jangka pendek.", solution: "Menerapkan konsep \"Puasa Digital\" parsial selama jam pelajaran, digantikan dengan diskusi melingkar (halaqah) bergaya modern. Tugas diubah dari format esai panjang menjadi pembuatan utas (thread) informatif di platform internal sekolah." },
+                    { icon: "psychology", title: "Krisis Identitas Gen Z", challenge: "Kebingungan moral di tengah benturan budaya pop global dan nilai agama.", solution: "Pendekatan studi kasus (Case-Based Learning) yang mengangkat isu-isu trending (cyberbullying, flex culture) dan membedahnya menggunakan pendekatan Maqashid Syariah secara dialogis, bukan doktriner." }
+                ]
+            },
+            visi: {
+                title: "Ruang Masa Depan",
+                description: "\"Membangun platform pembelajaran Al-Qur'an (Tajwid) berbasis kecerdasan buatan yang ramah anak, dan terus meneliti etika bermedia sosial dalam tinjauan fiqh kontemporer.\"",
+                items: [
+                    { number: "01", text: "Riset Fiqh Digital" },
+                    { number: "02", text: "Platform Tajwid AI" },
+                    { number: "03", text: "Pelatihan Guru PAI" }
+                ]
+            }
+        };
+    </script>
+    <div x-data="{
+        portfolioData: window.DEFAULT_PORTFOLIO_DATA || {},
+        isLoading: true,
+        async loadData() {
+            if(window.getDoc && window.firebaseDb && window.DEFAULT_PORTFOLIO_DATA) {
+                try {
+                    const docRef = window.doc(window.firebaseDb, 'portfolio', 'main');
+                    const docSnap = await window.getDoc(docRef);
+                    if (docSnap.exists()) {
+                        this.portfolioData = { ...window.DEFAULT_PORTFOLIO_DATA, ...docSnap.data() };
+                    } else {
+                        // Document doesn't exist, use default
+                        this.portfolioData = window.DEFAULT_PORTFOLIO_DATA;
+                    }
+                } catch(e) {
+                    console.error('Failed to load from Firestore', e);
+                    this.portfolioData = window.DEFAULT_PORTFOLIO_DATA;
+                } finally {
+                    this.isLoading = false;
+                }
+            } else {
+                setTimeout(() => this.loadData(), 100);
+            }
+        }
+    }" x-init="loadData()">
+        
+        <!-- Loading State -->
+        <div x-show="isLoading" class="min-h-screen flex items-center justify-center">
+            <div class="font-headline text-2xl text-primary animate-pulse">Memuat Data...</div>
+        </div>
+
+        <!-- Main Content -->
+        <div x-show="!isLoading" style="display: none;">
+            <Navbar />
+            
+            <Hero />
+            
+            <Muqaddimah />
+            
+            <JejakDigital />
+            
+            <GaleriInovasi />
+            
+            <Khidmah />
+            
+            <Strategi />
+            
+            <Visi />
+            
+            <Footer />
+        </div>
+    </div>
+</Layout>

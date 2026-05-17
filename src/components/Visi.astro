@@ -1,0 +1,45 @@
+<section class="py-32 px-6 md:px-12 text-center max-w-4xl mx-auto relative group" id="visi">
+    <!-- Edit Overlay -->
+    <template x-if="editMode">
+        <div class="absolute top-4 right-4 flex gap-2 z-10">
+            <button @click="saveData({ visi: portfolioData.visi })" class="bg-primary text-on-primary px-3 py-1 rounded text-sm hover:bg-surface-tint">Simpan Visi</button>
+        </div>
+    </template>
+
+    <div class="transition-all duration-1000 ease-out" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 scale-100' : 'opacity-0 scale-95'">
+        <span class="material-symbols-outlined text-primary text-5xl mb-6">explore</span>
+        <h2 class="font-headline text-4xl text-on-surface mb-6"
+            :contenteditable="editMode"
+            x-text="portfolioData.visi.title"
+            @blur="portfolioData.visi.title = $event.target.innerText"></h2>
+        
+        <p class="font-body text-xl text-on-surface-variant leading-relaxed mb-12"
+           :contenteditable="editMode"
+           x-text="portfolioData.visi.description"
+           @blur="portfolioData.visi.description = $event.target.innerText"></p>
+    </div>
+    
+    <div class="flex flex-wrap justify-center gap-8 text-on-surface-variant font-body">
+        <template x-for="(item, index) in portfolioData.visi.items" :key="index">
+            <div class="flex items-center gap-8 transition-all duration-1000 ease-out"
+                 x-data="{ shown: false }" 
+                 x-intersect.once="shown = true" 
+                 :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+                 :style="`transition-delay: ${index * 200}ms`">
+                <div class="flex flex-col items-center">
+                    <span class="font-headline text-3xl text-on-surface block mb-1"
+                          :contenteditable="editMode"
+                          x-text="item.number"
+                          @blur="portfolioData.visi.items[index].number = $event.target.innerText"></span>
+                    <span class="text-sm"
+                          :contenteditable="editMode"
+                          x-text="item.text"
+                          @blur="portfolioData.visi.items[index].text = $event.target.innerText"></span>
+                </div>
+                <template x-if="index !== portfolioData.visi.items.length - 1">
+                    <div class="w-px h-12 bg-outline-variant mt-2 hidden sm:block"></div>
+                </template>
+            </div>
+        </template>
+    </div>
+</section>
