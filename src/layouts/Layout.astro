@@ -1,9 +1,19 @@
 ---
 interface Props {
 	title: string;
+	description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description = "Portfolio Digital Guru PAI — Menjembatani nilai-nilai mulia pendidikan Islam tradisional dengan inovasi digital modern untuk generasi masa depan." } = Astro.props;
+
+// Read Firebase config from environment variables
+const firebaseApiKey = import.meta.env.PUBLIC_FIREBASE_API_KEY;
+const firebaseAuthDomain = import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN;
+const firebaseProjectId = import.meta.env.PUBLIC_FIREBASE_PROJECT_ID;
+const firebaseStorageBucket = import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET;
+const firebaseMessagingSenderId = import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID;
+const firebaseAppId = import.meta.env.PUBLIC_FIREBASE_APP_ID;
+const firebaseMeasurementId = import.meta.env.PUBLIC_FIREBASE_MEASUREMENT_ID;
 ---
 
 <!doctype html>
@@ -11,29 +21,34 @@ const { title } = Astro.props;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content={description} />
+		<meta name="author" content="Digital Islamic Educator" />
 		<title>{title}</title>
 		<link href="https://fonts.googleapis.com" rel="preconnect" />
 		<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
 		<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
 		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
         
+        <!-- Firebase Config (injected from env) -->
+        <script is:inline define:vars={{ firebaseApiKey, firebaseAuthDomain, firebaseProjectId, firebaseStorageBucket, firebaseMessagingSenderId, firebaseAppId, firebaseMeasurementId }}>
+            window.__FIREBASE_CONFIG__ = {
+                apiKey: firebaseApiKey,
+                authDomain: firebaseAuthDomain,
+                projectId: firebaseProjectId,
+                storageBucket: firebaseStorageBucket,
+                messagingSenderId: firebaseMessagingSenderId,
+                appId: firebaseAppId,
+                measurementId: firebaseMeasurementId
+            };
+        </script>
+
         <!-- Firebase SDKs -->
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
             import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
             import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
-            const firebaseConfig = {
-                apiKey: "AIzaSyBT3YcAIWt9QssLRFYMfjritBqGMNdqxQw",
-                authDomain: "islamic-porto.firebaseapp.com",
-                projectId: "islamic-porto",
-                storageBucket: "islamic-porto.firebasestorage.app",
-                messagingSenderId: "803117477027",
-                appId: "1:803117477027:web:f362182fce6a9c85326316",
-                measurementId: "G-MQTF46XNQL"
-            };
-
-            const app = initializeApp(firebaseConfig);
+            const app = initializeApp(window.__FIREBASE_CONFIG__);
             const auth = getAuth(app);
             const db = getFirestore(app);
 
