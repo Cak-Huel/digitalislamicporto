@@ -1,4 +1,4 @@
-<section class="py-24 px-6 md:px-12 bg-surface-container-high border-y border-outline-variant/30 relative group" id="galeri-inovasi"
+<section class="py-24 px-6 md:px-12 bg-surface-container-high relative group overflow-hidden" id="galeri-inovasi"
     x-data="{ showModal: false, activeLink: '' }">
     
     <!-- Edit Overlay -->
@@ -50,27 +50,45 @@
             </div>
         </div>
 
+        <!-- Featured first item + grid layout -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
             <!-- Glow background -->
             <div class="absolute inset-0 bg-tertiary-container/10 blur-[120px] -z-10 rounded-full pointer-events-none"></div>
 
             <template x-for="(item, index) in portfolioData.galeri_inovasi" :key="index">
-                <div class="group relative" 
+                <div class="group relative transition-all duration-500 hover:-translate-y-2" 
                     @click="if(!editMode && item.link) { activeLink = item.link; showModal = true; }"
-                    :class="[(item.link && !editMode) ? 'cursor-pointer' : '', shown ? 'animate-roll-in-left' : 'opacity-0']"
+                    :class="[
+                        (item.link && !editMode) ? 'cursor-pointer' : '', 
+                        shown ? 'animate-roll-in-left' : 'opacity-0',
+                        index === 0 ? 'md:col-span-2 md:row-span-2' : ''
+                    ]"
                     x-data="{ shown: false }" 
                     x-intersect.once="shown = true"
                     :style="`animation-delay: ${index * 300}ms`">
                     
-                    <div class="aspect-square bg-surface-container-lowest/50 backdrop-blur-md rounded-xl mb-4 overflow-hidden border border-white/30 relative sahara-shadow flex items-center justify-center">
+                    <div class="bg-surface-container-lowest/50 backdrop-blur-md rounded-xl mb-4 overflow-hidden border border-white/30 relative sahara-shadow flex items-center justify-center group-hover:shadow-xl group-hover:shadow-primary/10 group-hover:border-primary/30 transition-all duration-500"
+                         :class="index === 0 ? 'aspect-[4/3] md:aspect-auto md:h-full' : 'aspect-square'">
                         <!-- If Image exists -->
                         <template x-if="item.image">
-                            <img :src="window.formatImageUrl(item.image)" :alt="item.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 sepia-[.2]" />
+                            <img :src="window.formatImageUrl(item.image)" :alt="item.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 sepia-[.2] group-hover:sepia-0" />
                         </template>
                         <!-- If No image, show icon -->
                         <template x-if="!item.image && item.icon">
-                            <span class="material-symbols-outlined text-6xl text-secondary" x-text="item.icon"></span>
+                            <div class="flex flex-col items-center gap-3">
+                                <span class="material-symbols-outlined text-secondary transition-all duration-500 group-hover:scale-110 group-hover:text-primary"
+                                      :class="index === 0 ? 'text-8xl' : 'text-6xl'"
+                                      x-text="item.icon"></span>
+                            </div>
                         </template>
+
+                        <!-- Gradient overlay (always visible, stronger on hover) -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6 z-10">
+                            <div>
+                                <h3 class="font-headline text-xl text-white mb-1" x-text="item.title"></h3>
+                                <p class="font-body text-sm text-white/80" x-text="item.description"></p>
+                            </div>
+                        </div>
 
                         <!-- Edit Image URL Overlay -->
                         <template x-if="editMode">
@@ -93,22 +111,20 @@
                                 <input type="text" x-model="portfolioData.galeri_inovasi[index].icon" class="w-full text-xs text-black px-1 py-1 rounded">
                             </div>
                         </template>
-
-                        <!-- Non-edit hover effect -->
-                        <template x-if="!editMode && item.link">
-                            <div class="absolute inset-0 bg-inverse-surface/10 group-hover:bg-transparent transition-colors duration-300"></div>
-                        </template>
                     </div>
 
-                    <h3 class="font-headline text-xl text-on-surface mb-1"
-                        :contenteditable="editMode"
-                        x-text="item.title"
-                        @blur="portfolioData.galeri_inovasi[index].title = $event.target.innerText"></h3>
-                    
-                    <p class="font-body text-sm text-on-surface-variant"
-                       :contenteditable="editMode"
-                       x-text="item.description"
-                       @blur="portfolioData.galeri_inovasi[index].description = $event.target.innerText"></p>
+                    <!-- Text below card (hidden on hover since overlay shows it) -->
+                    <div class="transition-opacity duration-300 group-hover:opacity-50">
+                        <h3 class="font-headline text-xl text-on-surface mb-1"
+                            :contenteditable="editMode"
+                            x-text="item.title"
+                            @blur="portfolioData.galeri_inovasi[index].title = $event.target.innerText"></h3>
+                        
+                        <p class="font-body text-sm text-on-surface-variant"
+                           :contenteditable="editMode"
+                           x-text="item.description"
+                           @blur="portfolioData.galeri_inovasi[index].description = $event.target.innerText"></p>
+                    </div>
 
                     <!-- Edit Link Input -->
                     <template x-if="editMode">

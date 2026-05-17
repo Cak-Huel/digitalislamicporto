@@ -1,4 +1,4 @@
-<section class="py-24 px-6 md:px-12 bg-surface-container-low border-t border-outline-variant/30 relative group" id="muqaddimah">
+<section class="py-24 px-6 md:px-12 bg-surface-container-low relative group overflow-hidden" id="muqaddimah">
     
     <!-- Edit Overlay -->
     <template x-if="editMode">
@@ -8,16 +8,22 @@
     </template>
 
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-center relative z-10" x-data="{ shown: false }" x-intersect.once="shown = true">
-        <!-- 2 Photos with frames and names -->
-        <div class="md:col-span-5 relative grid grid-cols-2 gap-4">
+        <!-- 2 Photos with parallax frames and names -->
+        <div class="md:col-span-5 relative grid grid-cols-2 gap-4" x-data="{ offsetY: 0 }" @scroll.window.throttle.50ms="offsetY = window.scrollY">
             <template x-for="(photo, index) in portfolioData.muqaddimah.photos" :key="index">
-                <div class="flex flex-col items-center group/photo">
-                    <div class="w-full aspect-[4/5] rounded-xl overflow-hidden bg-surface-variant sahara-shadow border-4 border-surface-container-lowest relative">
-                        <img :src="window.formatImageUrl(photo.url)" :alt="photo.name" class="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-500 hover:scale-105" />
+                <div class="flex flex-col items-center group/photo transition-all duration-700 ease-out"
+                     :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'"
+                     :style="`transition-delay: ${index * 300}ms`">
+                    <div class="w-full aspect-[4/5] rounded-xl overflow-hidden bg-surface-variant sahara-shadow border-4 border-surface-container-lowest relative group/frame"
+                         :style="`transform: translateY(${(offsetY - ($el.offsetTop || 0)) * (index === 0 ? 0.03 : -0.02)}px)`">
+                        <img :src="window.formatImageUrl(photo.url)" :alt="photo.name" class="w-full h-full object-cover mix-blend-multiply opacity-90 transition-all duration-700 group-hover/frame:scale-110 group-hover/frame:mix-blend-normal group-hover/frame:opacity-100" />
                         
+                        <!-- Gradient overlay on hover -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent opacity-0 group-hover/frame:opacity-100 transition-opacity duration-500"></div>
+
                         <!-- Image URL Input Overlay (only in edit mode) -->
                         <template x-if="editMode">
-                            <div class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-4 opacity-0 hover:opacity-100 transition-opacity">
+                            <div class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-4 opacity-0 hover:opacity-100 transition-opacity z-10">
                                 <label class="text-white text-sm font-body mb-2">URL Foto Baru:</label>
                                 <input type="text" x-model="portfolioData.muqaddimah.photos[index].url" class="w-full text-sm text-black px-2 py-1 rounded mb-4">
                                 <label class="text-white text-sm font-body mb-2">Atau Unggah (Max 1MB):</label>
@@ -59,12 +65,12 @@
             </div>
 
             <div class="mt-10 grid grid-cols-2 gap-6 transition-all duration-1000 delay-500" :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'">
-                <div class="border-l-2 border-tertiary/50 pl-4">
+                <div class="border-l-2 border-tertiary/50 pl-4 hover:border-tertiary transition-colors duration-300">
                     <span class="material-symbols-outlined text-tertiary mb-2 text-3xl">menu_book</span>
                     <h3 class="font-headline text-xl text-on-surface">Tradisi</h3>
                     <p class="font-body text-sm text-on-surface-variant mt-1">Mengakar pada teks suci dan turats.</p>
                 </div>
-                <div class="border-l-2 border-primary/50 pl-4">
+                <div class="border-l-2 border-primary/50 pl-4 hover:border-primary transition-colors duration-300">
                     <span class="material-symbols-outlined text-primary mb-2 text-3xl">devices</span>
                     <h3 class="font-headline text-xl text-on-surface">Inovasi</h3>
                     <p class="font-body text-sm text-on-surface-variant mt-1">Adaptif terhadap medium masa kini.</p>
@@ -79,4 +85,12 @@
         alt="Dekorasi Islami"
         class="absolute bottom-0 h-1/2 w-auto max-w-full object-contain left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 opacity-20 pointer-events-none z-0"
     />
+
+    <!-- Wave separator bottom -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-10">
+        <svg class="relative block w-full h-[40px] md:h-[60px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="currentColor" class="text-[#ffe0b7]" opacity=".5"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="currentColor" class="text-[#ffe0b7]" opacity=".3"></path>
+        </svg>
+    </div>
 </section>

@@ -33,14 +33,14 @@ const backgroundImage = "/wave-sahara.svg";
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(180px,auto)]">
             
-            <!-- Item 1 (Light Card) -->
-            <div class="md:col-span-2 bg-white/40 backdrop-blur-xl p-8 rounded-xl border border-white/20 sahara-shadow group hover:border-primary/50 transition-all duration-1000 relative" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'" :style="`animation-delay: 100ms`">
+            <!-- Item 1 (Light Card - wide) -->
+            <div class="md:col-span-2 bg-white/40 backdrop-blur-xl p-8 rounded-xl border border-white/20 sahara-shadow group/card relative transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/40" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'" :style="`animation-delay: 100ms`">
                 <div class="flex justify-between items-start mb-4">
                     <h3 class="font-headline text-2xl text-on-surface"
                         :contenteditable="editMode"
                         x-text="portfolioData.jejak_digital.items[0].title"
                         @blur="portfolioData.jejak_digital.items[0].title = $event.target.innerText"></h3>
-                    <span class="material-symbols-outlined text-primary text-3xl" x-text="portfolioData.jejak_digital.items[0].icon"></span>
+                    <span class="material-symbols-outlined text-primary text-3xl transition-all duration-500 group-hover/card:rotate-12 group-hover/card:scale-125 group-hover/card:text-surface-tint" x-text="portfolioData.jejak_digital.items[0].icon"></span>
                 </div>
                 <p class="font-body text-on-surface-variant mt-2"
                    :contenteditable="editMode"
@@ -53,11 +53,14 @@ const backgroundImage = "/wave-sahara.svg";
                         <input type="text" x-model="portfolioData.jejak_digital.items[0].icon" class="w-full text-xs px-2 py-1 border rounded bg-surface-container text-black">
                     </div>
                 </template>
+
+                <!-- Hover corner glow -->
+                <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
 
             <!-- Item 2 (Dark Card) -->
-            <div class="bg-primary backdrop-blur-xl text-white p-8 rounded-xl border border-white/20 sahara-shadow flex flex-col justify-center relative transition-all duration-1000" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'" :style="`animation-delay: 200ms`">
-                <span class="material-symbols-outlined text-4xl mb-4 text-on-primary-fixed-variant" x-text="portfolioData.jejak_digital.items[1].icon"></span>
+            <div class="bg-primary backdrop-blur-xl text-white p-8 rounded-xl border border-white/20 sahara-shadow flex flex-col justify-center relative group/card transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/20" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'" :style="`animation-delay: 200ms`">
+                <span class="material-symbols-outlined text-4xl mb-4 text-on-primary-fixed-variant transition-all duration-500 group-hover/card:scale-125 group-hover/card:rotate-[-12deg]" x-text="portfolioData.jejak_digital.items[1].icon"></span>
                 <h3 class="font-headline text-2xl mb-2"
                     :contenteditable="editMode"
                     x-text="portfolioData.jejak_digital.items[1].title"
@@ -75,8 +78,8 @@ const backgroundImage = "/wave-sahara.svg";
             </div>
 
             <!-- Item 3 (Light Card) -->
-            <div class="bg-white/30 backdrop-blur-xl p-8 rounded-xl border border-white/10 sahara-shadow relative transition-all duration-1000" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'" :style="`animation-delay: 300ms`">
-                <span class="material-symbols-outlined text-tertiary text-3xl mb-4" x-text="portfolioData.jejak_digital.items[2].icon"></span>
+            <div class="bg-white/30 backdrop-blur-xl p-8 rounded-xl border border-white/10 sahara-shadow relative group/card transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-tertiary/10 hover:border-tertiary/30" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'" :style="`animation-delay: 300ms`">
+                <span class="material-symbols-outlined text-tertiary text-3xl mb-4 transition-all duration-500 group-hover/card:scale-125 group-hover/card:rotate-12" x-text="portfolioData.jejak_digital.items[2].icon"></span>
                 <h3 class="font-headline text-xl text-on-surface mb-2"
                     :contenteditable="editMode"
                     x-text="portfolioData.jejak_digital.items[2].title"
@@ -91,12 +94,15 @@ const backgroundImage = "/wave-sahara.svg";
                         <input type="text" x-model="portfolioData.jejak_digital.items[2].icon" class="w-full text-xs px-2 py-1 border rounded bg-surface-container text-black">
                     </div>
                 </template>
+
+                <!-- Hover corner glow -->
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-tertiary/10 rounded-full blur-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
 
-            <!-- Item 4 (Light Card) -->
-            <div class="md:col-span-2 bg-white/40 backdrop-blur-xl p-8 rounded-xl border border-white/20 sahara-shadow flex flex-col justify-between overflow-hidden relative transition-all duration-1000" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'" :style="`animation-delay: 400ms`">
+            <!-- Item 4 (Light Card - wide) -->
+            <div class="md:col-span-2 bg-white/40 backdrop-blur-xl p-8 rounded-xl border border-white/20 sahara-shadow flex flex-col justify-between overflow-hidden relative group/card transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/40" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'opacity-100 translate-y-0 animate-shadow-drop-2-center' : 'opacity-0 translate-y-12'" :style="`animation-delay: 400ms`">
                 <div class="relative z-10">
-                    <span class="material-symbols-outlined text-primary text-3xl mb-4" x-text="portfolioData.jejak_digital.items[3].icon"></span>
+                    <span class="material-symbols-outlined text-primary text-3xl mb-4 transition-all duration-500 group-hover/card:scale-125 group-hover/card:rotate-12" x-text="portfolioData.jejak_digital.items[3].icon"></span>
                     <h3 class="font-headline text-2xl text-on-surface mb-2"
                         :contenteditable="editMode"
                         x-text="portfolioData.jejak_digital.items[3].title"
@@ -112,9 +118,16 @@ const backgroundImage = "/wave-sahara.svg";
                         </div>
                     </template>
                 </div>
-                <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl z-0 pointer-events-none"></div>
+                <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl z-0 pointer-events-none group-hover/card:bg-primary/20 transition-colors duration-500"></div>
             </div>
 
         </div>
+    </div>
+
+    <!-- Wave separator bottom -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] z-10">
+        <svg class="relative block w-full h-[40px] md:h-[60px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" fill="currentColor" class="text-surface-container-high"></path>
+        </svg>
     </div>
 </section>

@@ -6,7 +6,7 @@ import ScrollImage from "./ScrollImage.astro";
     <!-- Auto-moving background element -->
     <ScrollImage />
 
-    <div class="max-w-3xl mx-auto px-6 md:px-12 relative">
+    <div class="max-w-4xl mx-auto px-6 md:px-12 relative">
         <!-- Edit Overlay -->
         <template x-if="editMode">
             <div class="absolute top-4 right-4 flex gap-2 z-10">
@@ -26,51 +26,61 @@ import ScrollImage from "./ScrollImage.astro";
         >
         </h2>
 
-        <div class="relative border-l border-outline-variant ml-4 md:ml-0">
-            <!-- Glow background behind timeline -->
-            <div
-                class="absolute top-0 -left-10 w-20 h-[120%] bg-primary/10 blur-[80px] -z-10 pointer-events-none"
-            >
-            </div>
+        <!-- Alternating Timeline -->
+        <div class="relative">
+            <!-- Center line (desktop) / Left line (mobile) -->
+            <div class="absolute top-0 bottom-0 left-4 md:left-1/2 w-px bg-outline-variant md:-translate-x-px"></div>
+            
+            <!-- Glow on timeline line -->
+            <div class="absolute top-0 bottom-0 left-4 md:left-1/2 w-8 -translate-x-1/2 bg-primary/5 blur-[40px] pointer-events-none"></div>
 
             <template x-for="(item, index) in portfolioData.khidmah.items" :key="index">
                 <div
-                    class="mb-12 ml-8 relative group/item transition-all duration-1000 ease-out"
+                    class="relative mb-12 group/item transition-all duration-1000 ease-out"
                     x-data="{ shown: false }"
                     x-intersect.once="shown = true"
                     :class="shown ? 'opacity-100 animate-slide-right' : 'opacity-0 -translate-x-12'"
                     :style="`animation-delay: ${index * 200}ms`"
                 >
+                    <!-- Timeline dot -->
                     <span
-                        class="absolute -left-10 flex items-center justify-center w-4 h-4 rounded-full ring-4 ring-background transition-colors duration-1000"
-                        :class="index === 0 ? 'bg-primary' : 'bg-surface-dim'"
+                        class="absolute left-4 md:left-1/2 -translate-x-1/2 flex items-center justify-center w-5 h-5 rounded-full ring-4 ring-background transition-all duration-500 z-10"
+                        :class="index === 0 ? 'bg-primary scale-125' : 'bg-surface-dim group-hover/item:bg-primary group-hover/item:scale-125'"
                     ></span>
 
+                    <!-- Card (alternating sides on desktop) -->
                     <div
-                        class="bg-surface-container-lowest/60 backdrop-blur-md p-6 rounded-xl border border-white/20 sahara-shadow"
+                        class="ml-12 md:ml-0 md:w-[calc(50%-2rem)]"
+                        :class="index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'"
                     >
-                        <span
-                            class="text-sm font-body text-tertiary font-bold tracking-wider uppercase mb-2 block"
-                            :contenteditable="editMode"
-                            x-text="item.year"
-                            @blur="portfolioData.khidmah.items[index].year = $event.target.innerText"
-                        ></span>
-
-                        <h3
-                            class="font-headline text-2xl text-on-surface mb-2"
-                            :contenteditable="editMode"
-                            x-text="item.title"
-                            @blur="portfolioData.khidmah.items[index].title = $event.target.innerText"
+                        <div
+                            class="bg-surface-container-lowest/60 backdrop-blur-md p-6 rounded-xl border border-white/20 sahara-shadow
+                                   hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30
+                                   transition-all duration-500"
                         >
-                        </h3>
+                            <span
+                                class="text-sm font-body text-tertiary font-bold tracking-wider uppercase mb-2 block"
+                                :contenteditable="editMode"
+                                x-text="item.year"
+                                @blur="portfolioData.khidmah.items[index].year = $event.target.innerText"
+                            ></span>
 
-                        <p
-                            class="font-body text-on-surface-variant"
-                            :contenteditable="editMode"
-                            x-text="item.description"
-                            @blur="portfolioData.khidmah.items[index].description = $event.target.innerText"
-                        >
-                        </p>
+                            <h3
+                                class="font-headline text-2xl text-on-surface mb-2"
+                                :contenteditable="editMode"
+                                x-text="item.title"
+                                @blur="portfolioData.khidmah.items[index].title = $event.target.innerText"
+                            >
+                            </h3>
+
+                            <p
+                                class="font-body text-on-surface-variant"
+                                :contenteditable="editMode"
+                                x-text="item.description"
+                                @blur="portfolioData.khidmah.items[index].description = $event.target.innerText"
+                            >
+                            </p>
+                        </div>
                     </div>
                 </div>
             </template>
